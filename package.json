@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "minecraft-data": "2.220.0",
+    "mineflayer": "4.2.0",
+    "mineflayer-blockfinder": "^0.0.7",
+    "mineflayer-pathfinder": "^2.0.0",
+    "prismarine-item": "^1.11.3",
+    "prismarine-viewer": "^1.22.0",
+    "proxy-agent": "^5.0.0",
+    "vec3": "^0.1.7"
+  },
+  "scripts": {
+    "work": "node ./dist/main.js"
+  }
+}

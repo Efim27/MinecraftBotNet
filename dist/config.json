@@ -1,0 +1,14 @@
+{
+    "server": {
+        "host": "mc.rpmserver.ru",
+        "port": 25565,
+        "version": "1.12.2"
+    },
+    "coords": {
+        "takingBlock": [207.5, 64, 171.5],
+        "block": [209.5, 64, 175.5],
+        "putingBlock": [205, 64, 164],
+        "sign": [204, 65.5, 162],
+        "trashDrop": [197.5, 64, 164]
+    }
+}
