@@ -85,7 +85,7 @@ export default class MineBot {
         this.inventory = new BotInventory(this);
         this.doings = new BotDoings(this);
 
-        return this.initEventHandlers();
+        this.initEventHandlers();
     }
 
     private reLogin = async () => {

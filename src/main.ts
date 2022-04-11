@@ -9,4 +9,5 @@ const main = async () => {
     await bot.work();
 };
 
+main();
 export default main;

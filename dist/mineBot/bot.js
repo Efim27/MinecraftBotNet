@@ -89,7 +89,7 @@ class MineBot {
             this.bot.pathfinder.tickTimeout = 20;
             this.inventory = new inventory_1.default(this);
             this.doings = new doings_1.default(this);
-            return this.initEventHandlers();
+            this.initEventHandlers();
         };
         this.reLogin = () => __awaiter(this, void 0, void 0, function* () {
             const relogAfterMs = utils.randomIntFromInterval(30000, 120000);

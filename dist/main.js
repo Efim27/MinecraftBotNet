@@ -43,4 +43,5 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield bot.login();
     yield bot.work();
 });
+main();
 exports.default = main;
