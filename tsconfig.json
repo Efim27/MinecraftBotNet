@@ -1,0 +1,14 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "dist",
+        "module": "commonjs",
+        "target": "es6",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+    },
+    "exclude":[
+        "node_modules"
+    ]
+}

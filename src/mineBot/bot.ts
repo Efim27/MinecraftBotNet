@@ -1,9 +1,10 @@
 const mineflayer = require("mineflayer");
 const proxyAgent = require('proxy-agent');
 const socks = require('socks').SocksClient;
-const {pathfinder, Movements} = require("mineflayer-pathfinder");
+const { pathfinder, Movements } = require("mineflayer-pathfinder");
 const blockFinderPlugin = require('mineflayer-blockfinder')(mineflayer);
 
+import main from "../main";
 import * as utils from "../utils";
 import BotInventory from './inventory';
 import BotDoings from './doings';
@@ -30,13 +31,13 @@ export default class MineBot {
         thirst: number,
         money: number
     } = {
-        food: 0,
-        health: 0,
-        thirst: 0,
-        money: 0
-    };
+            food: 0,
+            health: 0,
+            thirst: 0,
+            money: 0
+        };
 
-    constructor(username: string){
+    constructor(username: string) {
         this.username = username;
         this.password = this.getPassword();
     }
@@ -81,20 +82,28 @@ export default class MineBot {
         this.bot.pathfinder.thinkTimeout = 500;
         this.bot.pathfinder.tickTimeout = 20;
 
-        this.initEventHandlers();
-
         this.inventory = new BotInventory(this);
         this.doings = new BotDoings(this);
+
+        return this.initEventHandlers();
     }
 
+    private reLogin = async () => {
+        const relogAfterMs: number = utils.randomIntFromInterval(30000, 120000);
+        console.log(`Перезагрузка через ${relogAfterMs} ms`);
+        await utils.delay(relogAfterMs);
+
+        main();
+    };
+
     public login = (): Promise<void> => {
-        return new Promise((resolve) => {
+        return new Promise(async (resolve, reject) => {
             this.connectToServer();
 
             this.bot.on("spawn", async () => {
                 this.bot.chat(`/l ${this.password}`);
                 await utils.delay(utils.randomIntFromInterval(10000, 20000));
-                
+
                 return resolve();
             });
         });
@@ -114,30 +123,25 @@ export default class MineBot {
         this.bot.on("kicked", async (reason) => {
             console.log(`Кик: \n${reason}\n`);
             await utils.delay(utils.randomIntFromInterval(15000, 30000));
-    
-            await this.bot.quit();
-            await this.bot.end();
-    
-            //bot_start();
-            //throw new Error('Кик');
+
+            this.reLogin();
         });
-    
+
         this.bot.on("forcedMover", async (reason) => {
             this.bot.chat('Зигвимба');
             console.log(`Бот был принудительно перемещен на координаты: \n${this.bot.entity.position}\n`);
             await utils.delay(1500);
 
             this.bot.quit();
+            this.bot.end();
         });
-    
+
         this.bot.on("error", async (reason) => {
             console.log(`Ошибка: \n${reason}\n`);
-            await utils.delay(1500);
 
-            //this.bot.quit();
-            //bot_start();
+            this.reLogin();
         });
-    
+
         this.bot.on("chat", async (username, message) => {
             if (username === this.bot.username) return;
             if (message.includes('таскай')) return;
@@ -148,18 +152,18 @@ export default class MineBot {
 
             console.log(`(чат) ${message}`);
         });
-    
+
         this.bot.on("message", async (jsonMsg, position) => {
             //Фильтр вывода баланса
             if (!jsonMsg.extra) {
                 return;
             }
-    
+
             const msgType = jsonMsg.extra[0].text;
             if (msgType != 'Баланс:') {
                 return;
             }
-    
+
             const msgText = jsonMsg.extra[1].text.trim();
             const balanceNum: number = Number.parseInt(msgText.replace('$', '').replace(',', ''));
             console.log(`Баланс: ${balanceNum} $`);
@@ -167,7 +171,7 @@ export default class MineBot {
             if (this.payMoneyOwner) {
                 const payDelay: number = utils.randomIntFromInterval(30000, 120000);
                 this.payMoneyOwner = false;
-                
+
                 setInterval(() => {
                     console.log(`Выплата ${config.owner.username} пройдет через ${payDelay}`);
                     this.bot.chat(`/pay ${config.owner.username} ${balanceNum}`);
@@ -175,16 +179,16 @@ export default class MineBot {
                 }, payDelay);
             }
         });
-    
+
         this.bot.on("bossBarUpdated", async (bossBar) => {
             this.stats.thirst = bossBar.health;
         });
-    
+
         this.bot.on("health", async () => {
             if (this.stats.food == this.bot.food) {
                 return;
             }
-    
+
             this.stats.food = this.bot.food;
         });
     }

@@ -40,24 +40,7 @@ const utils = __importStar(require("./utils"));
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const stringBotUsername = utils.getCurrentBotUsername();
     const bot = new bot_1.default(stringBotUsername);
-    while (true) {
-        try {
-            yield bot.login();
-        }
-        catch (e) {
-            console.log('Факап логина');
-            console.log(e);
-        }
-        try {
-            yield bot.work();
-        }
-        catch (e) {
-            console.log('Факап...');
-            console.log(e);
-        }
-        const relogAfterMs = utils.randomIntFromInterval(30000, 120000);
-        console.log(`Перезагрузка через ${relogAfterMs} ms`);
-        yield utils.delay(relogAfterMs);
-    }
+    yield bot.login();
+    yield bot.work();
 });
-main();
+exports.default = main;

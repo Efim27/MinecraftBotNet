@@ -40,6 +40,7 @@ const proxyAgent = require('proxy-agent');
 const socks = require('socks').SocksClient;
 const { pathfinder, Movements } = require("mineflayer-pathfinder");
 const blockFinderPlugin = require('mineflayer-blockfinder')(mineflayer);
+const main_1 = __importDefault(require("../main"));
 const utils = __importStar(require("../utils"));
 const inventory_1 = __importDefault(require("./inventory"));
 const doings_1 = __importDefault(require("./doings"));
@@ -86,19 +87,25 @@ class MineBot {
             this.bot.pathfinder.setMovements(workingMove);
             this.bot.pathfinder.thinkTimeout = 500;
             this.bot.pathfinder.tickTimeout = 20;
-            this.initEventHandlers();
             this.inventory = new inventory_1.default(this);
             this.doings = new doings_1.default(this);
+            return this.initEventHandlers();
         };
+        this.reLogin = () => __awaiter(this, void 0, void 0, function* () {
+            const relogAfterMs = utils.randomIntFromInterval(30000, 120000);
+            console.log(`Перезагрузка через ${relogAfterMs} ms`);
+            yield utils.delay(relogAfterMs);
+            (0, main_1.default)();
+        });
         this.login = () => {
-            return new Promise((resolve) => {
+            return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
                 this.connectToServer();
                 this.bot.on("spawn", () => __awaiter(this, void 0, void 0, function* () {
                     this.bot.chat(`/l ${this.password}`);
                     yield utils.delay(utils.randomIntFromInterval(10000, 20000));
                     return resolve();
                 }));
-            });
+            }));
         };
         this.work = () => {
             return new Promise((reject) => __awaiter(this, void 0, void 0, function* () {
@@ -112,22 +119,18 @@ class MineBot {
             this.bot.on("kicked", (reason) => __awaiter(this, void 0, void 0, function* () {
                 console.log(`Кик: \n${reason}\n`);
                 yield utils.delay(utils.randomIntFromInterval(15000, 30000));
-                yield this.bot.quit();
-                yield this.bot.end();
-                //bot_start();
-                //throw new Error('Кик');
+                this.reLogin();
             }));
             this.bot.on("forcedMover", (reason) => __awaiter(this, void 0, void 0, function* () {
                 this.bot.chat('Зигвимба');
                 console.log(`Бот был принудительно перемещен на координаты: \n${this.bot.entity.position}\n`);
                 yield utils.delay(1500);
                 this.bot.quit();
+                this.bot.end();
             }));
             this.bot.on("error", (reason) => __awaiter(this, void 0, void 0, function* () {
                 console.log(`Ошибка: \n${reason}\n`);
-                yield utils.delay(1500);
-                //this.bot.quit();
-                //bot_start();
+                this.reLogin();
             }));
             this.bot.on("chat", (username, message) => __awaiter(this, void 0, void 0, function* () {
                 if (username === this.bot.username)
