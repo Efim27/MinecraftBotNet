@@ -10,7 +10,7 @@
         "putingBlock": [205, 64, 164],
         "sign": [204, 65.5, 162],
         "trashDrop": [197.5, 64, 164],
-        "eatingPlace": [198.5, 64, 169],
+        "eatingPlace": [202.5, 64, 164.5],
         "halfPathCoords": [
             [205, 64, 170],
             [206.5, 64, 168],
