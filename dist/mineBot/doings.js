@@ -41,7 +41,13 @@ const utils = __importStar(require("../utils"));
 const config_json_1 = __importDefault(require("../config/config.json"));
 class BotDoings {
     constructor(mineBot) {
-        this.checkBotFood = () => {
+        this.checkStats = () => __awaiter(this, void 0, void 0, function* () {
+            yield this.checkFood();
+            yield this.checkThirst();
+            yield this.checkHealth();
+        });
+        this.checkFood = () => {
+            ц;
             if (this.mineBot.stats.food > config_json_1.default.bot.eatAfterMinFood) {
                 return;
             }
@@ -49,7 +55,7 @@ class BotDoings {
             console.log(`Сытость: ${this.mineBot.stats.food}\n`);
             return this.eat();
         };
-        this.checkBotThirst = () => {
+        this.checkThirst = () => {
             if (this.mineBot.stats.thirst > config_json_1.default.bot.drinkAfterMinThirst) {
                 return;
             }
@@ -57,9 +63,18 @@ class BotDoings {
             console.log(`Жажда: ${this.mineBot.stats.thirst}\n`);
             return this.drink();
         };
+        this.checkHealth = () => {
+            if (this.mineBot.stats.health > 7) {
+                return;
+            }
+            console.log(`Мало здоровья`);
+            console.log(`Здоровье: ${this.mineBot.stats.health}\n`);
+            return this.mineBot.destroy();
+        };
         this.eat = () => {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 const foodItem = this.botInventory.itemByName('baked_potato');
+                yield this.gotoCoords(config_json_1.default.coords.trashDrop);
                 yield this.bot.equip(foodItem, 'hand').catch(() => { });
                 yield this.bot.consume().catch(() => { });
                 yield this.bot.unequip('hand').catch(() => { });
@@ -69,6 +84,7 @@ class BotDoings {
         this.drink = () => {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 const foodItem = this.botInventory.itemByName('potion');
+                yield this.gotoCoords(config_json_1.default.coords.trashDrop);
                 yield this.bot.equip(foodItem, 'hand').catch(() => { });
                 yield this.bot.consume().catch(() => { });
                 yield this.bot.unequip('hand').catch(() => { });
@@ -105,16 +121,16 @@ class BotDoings {
                 count: 1,
             });
         };
-        this.checkBotMoney = () => {
+        this.checkMoney = () => {
             this.bot.chat('/bal');
         };
-        this.printBotStats = () => {
+        this.printStats = () => {
             const botStats = this.mineBot.stats;
             console.log(`Здоровье: ${botStats.health}/20`);
             console.log(`Сытость: ${botStats.food}/20`);
             console.log(`Жажда: ${botStats.thirst}\n`);
         };
-        this.dropBotTrash = () => {
+        this.dropTrash = () => {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 let trashSlots = [];
                 trashSlots.push(...this.botInventory.getStoneSlots());

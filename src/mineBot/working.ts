@@ -24,25 +24,24 @@ export class BotWork {
     }
 
     public working = async () => {
-        await this.botDoings.dropBotTrash();
+        await this.botDoings.dropTrash();
         await this.botDoings.gotoCoords(config.coords.takingBlock);
-        this.botDoings.checkBotMoney();
+        this.botDoings.checkMoney();
     
         while (true) {
             this.loopTimeMs = await this.workHandler.work(this.botDoings);
     
             if (this.loopNum % config.bot.printStatsEveryLoopNum == 0) {
                 console.log();
-                console.log(`LoopNum: ${this.loopNum}`);
-                this.botDoings.checkBotMoney();
+                console.log(`Номер круга: ${this.loopNum}`);
+                this.botDoings.checkMoney();
                 console.log(this.mineBot.getSalaryPerHour(this.loopTimeMs));
                 console.log();
             }
     
             this.loopNum++;
     
-            await this.botDoings.checkBotFood();
-            await this.botDoings.checkBotThirst();
+            await this.botDoings.checkStats();
         }
     }
 }

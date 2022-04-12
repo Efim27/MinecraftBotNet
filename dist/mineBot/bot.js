@@ -91,6 +91,10 @@ class MineBot {
             this.doings = new doings_1.default(this);
             this.initEventHandlers();
         };
+        this.destroy = () => {
+            this.bot.quit();
+            this.bot.end();
+        };
         this.reLogin = () => __awaiter(this, void 0, void 0, function* () {
             const relogAfterMs = utils.randomIntFromInterval(30000, 120000);
             console.log(`Перезагрузка через ${relogAfterMs} ms`);

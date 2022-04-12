@@ -19,21 +19,20 @@ class BotWork {
         this.loopNum = 1;
         this.loopTimeMs = 0;
         this.working = () => __awaiter(this, void 0, void 0, function* () {
-            yield this.botDoings.dropBotTrash();
+            yield this.botDoings.dropTrash();
             yield this.botDoings.gotoCoords(config_json_1.default.coords.takingBlock);
-            this.botDoings.checkBotMoney();
+            this.botDoings.checkMoney();
             while (true) {
                 this.loopTimeMs = yield this.workHandler.work(this.botDoings);
                 if (this.loopNum % config_json_1.default.bot.printStatsEveryLoopNum == 0) {
                     console.log();
-                    console.log(`LoopNum: ${this.loopNum}`);
-                    this.botDoings.checkBotMoney();
+                    console.log(`Номер круга: ${this.loopNum}`);
+                    this.botDoings.checkMoney();
                     console.log(this.mineBot.getSalaryPerHour(this.loopTimeMs));
                     console.log();
                 }
                 this.loopNum++;
-                yield this.botDoings.checkBotFood();
-                yield this.botDoings.checkBotThirst();
+                yield this.botDoings.checkStats();
             }
         });
         this.mineBot = mineBot;

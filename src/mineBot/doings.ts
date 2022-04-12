@@ -25,7 +25,13 @@ export default class BotDoings {
         this.botInventory = mineBot.inventory;
     }
 
-    public checkBotFood = () => {
+    public checkStats = async () => {
+        await this.checkFood();
+        await this.checkThirst();
+        await this.checkHealth();
+    }
+
+    public checkFood = () => {ц
         if (this.mineBot.stats.food > config.bot.eatAfterMinFood) {
             return;
         }
@@ -36,7 +42,7 @@ export default class BotDoings {
         return this.eat();
     }
 
-    public checkBotThirst = () => {
+    public checkThirst = () => {
         if (this.mineBot.stats.thirst > config.bot.drinkAfterMinThirst) {
             return;
         }
@@ -45,6 +51,18 @@ export default class BotDoings {
         console.log(`Жажда: ${this.mineBot.stats.thirst}\n`);
 
         return this.drink();
+    }
+
+    public checkHealth = () => {
+        if (this.mineBot.stats.health > 7) {
+            return;
+        }
+
+        console.log(`Мало здоровья`);
+        console.log(`Здоровье: ${this.mineBot.stats.health}\n`);
+
+        return this.mineBot.destroy();
+
     }
 
     public eat = (): Promise<void> => {
@@ -110,11 +128,11 @@ export default class BotDoings {
         });
     }
 
-    public checkBotMoney = () => {
+    public checkMoney = () => {
         this.bot.chat('/bal');
     }
 
-    public printBotStats = () => {
+    public printStats = () => {
         const botStats = this.mineBot.stats;
 
         console.log(`Здоровье: ${botStats.health}/20`);
@@ -122,7 +140,7 @@ export default class BotDoings {
         console.log(`Жажда: ${botStats.thirst}\n`);
     }
 
-    public dropBotTrash = (): Promise<void> => {
+    public dropTrash = (): Promise<void> => {
         return new Promise(async (resolve) => {
             let trashSlots = [];
     

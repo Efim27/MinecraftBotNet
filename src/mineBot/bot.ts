@@ -88,6 +88,11 @@ export default class MineBot {
         this.initEventHandlers();
     }
 
+    public destroy = () => {
+        this.bot.quit();
+        this.bot.end();
+    };
+
     private reLogin = async () => {
         const relogAfterMs: number = utils.randomIntFromInterval(30000, 120000);
         console.log(`Перезагрузка через ${relogAfterMs} ms`);
