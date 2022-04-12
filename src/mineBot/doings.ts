@@ -51,6 +51,7 @@ export default class BotDoings {
         return new Promise(async (resolve) => {
             const foodItem = this.botInventory.itemByName('baked_potato');
     
+            await this.gotoCoords(config.coords.trashDrop);
             await this.bot.equip(foodItem, 'hand').catch(() => {});
             await this.bot.consume().catch(() => {});
             await this.bot.unequip('hand').catch(() => {});
@@ -62,7 +63,8 @@ export default class BotDoings {
     public drink = (): Promise<void> => {
         return new Promise(async (resolve)=> {
             const foodItem = this.botInventory.itemByName('potion');
-    
+
+            await this.gotoCoords(config.coords.trashDrop);
             await this.bot.equip(foodItem, 'hand').catch(() => {});
             await this.bot.consume().catch(() => {});
             await this.bot.unequip('hand').catch(() => {});
