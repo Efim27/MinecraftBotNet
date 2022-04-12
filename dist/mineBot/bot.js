@@ -159,11 +159,11 @@ class MineBot {
                 console.log(`(${this.username}) Баланс: ${balanceNum} $`);
                 if (this.payMoneyOwner) {
                     const payDelay = utils.randomIntFromInterval(30000, 120000);
-                    this.payMoneyOwner = false;
-                    setInterval(() => {
-                        console.log(`Выплата ${config_json_1.default.owner.username} пройдет через ${payDelay}`);
+                    console.log(`Выплата ${config_json_1.default.owner.username} пройдет через ${payDelay}`);
+                    setTimeout(() => {
                         this.bot.chat(`/pay ${config_json_1.default.owner.username} ${balanceNum}`);
                         console.log(`Выплата ${config_json_1.default.owner.username} в размере ${balanceNum}$ прошла успешно`);
+                        this.payMoneyOwner = false;
                     }, payDelay);
                 }
             }));
