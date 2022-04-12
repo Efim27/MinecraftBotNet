@@ -140,7 +140,7 @@ class MineBot {
                     return;
                 if (message.includes('таскай'))
                     return;
-                if (message.includes('зигвимба') && message.includes('Сеспель')) {
+                if (message.includes(config_json_1.default.secretWords.pay) && message.includes(config_json_1.default.owner.surname)) {
                     this.payMoneyOwner = true;
                 }
                 console.log(`(чат) ${message}`);

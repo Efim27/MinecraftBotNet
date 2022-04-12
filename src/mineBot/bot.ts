@@ -150,7 +150,7 @@ export default class MineBot {
             if (username === this.bot.username) return;
             if (message.includes('таскай')) return;
 
-            if (message.includes('зигвимба') && message.includes('Сеспель')) {
+            if (message.includes(config.secretWords.pay) && message.includes(config.owner.surname)) {
                 this.payMoneyOwner = true;
             }
 
