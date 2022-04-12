@@ -26,12 +26,14 @@ export default class BotDoings {
     }
 
     public checkStats = async () => {
-        await this.checkFood();
+        this.checkFoodCount();
+
+        await this.checkSatiety();
         await this.checkThirst();
         await this.checkHealth();
     }
 
-    public checkFood = () => {
+    public checkSatiety = () => {
         if (this.mineBot.stats.food > config.bot.eatAfterMinFood) {
             return;
         }
@@ -40,6 +42,20 @@ export default class BotDoings {
         console.log(`Сытость: ${this.mineBot.stats.food}\n`);
 
         return this.eat();
+    }
+
+    public checkFoodCount = () => {
+        const botInventory = this.botInventory.getInventoryItemsCount();
+
+        if (botInventory['potion'] < 3) {
+            console.log('Мало воды');
+            return this.mineBot.destroy();
+        }
+
+        if (botInventory['baked_potato'] < 8) {
+            console.log('Мало еды');
+            return this.mineBot.destroy();
+        }
     }
 
     public checkThirst = () => {
@@ -64,7 +80,6 @@ export default class BotDoings {
         console.log(`Здоровье: ${health}\n`);
 
         return this.mineBot.destroy();
-
     }
 
     public eat = (): Promise<void> => {

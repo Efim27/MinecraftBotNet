@@ -79,6 +79,22 @@ export default class BotInventory {
         return this.itemsByName(name)[0];
     }
 
+    public getInventoryItemsCount = () => {
+        const items = this.bot.inventory.items();
+        const itemsCount = {};
+
+        items.forEach(item => {
+            if (item.name in itemsCount) {
+                itemsCount[item.name] += item.count;
+                return;
+            }
+
+            itemsCount[item.name] = item.count;
+        });
+
+        return itemsCount;
+    };
+
     static itemToString = (item): string => {
         if (item) {
             return `${item.name} x ${item.count}`;

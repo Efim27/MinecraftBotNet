@@ -66,6 +66,18 @@ class BotInventory {
         this.itemByName = (name) => {
             return this.itemsByName(name)[0];
         };
+        this.getInventoryItemsCount = () => {
+            const items = this.bot.inventory.items();
+            const itemsCount = {};
+            items.forEach(item => {
+                if (item.name in itemsCount) {
+                    itemsCount[item.name] += item.count;
+                    return;
+                }
+                itemsCount[item.name] = item.count;
+            });
+            return itemsCount;
+        };
         this.mineBot = mineBot;
         this.bot = mineBot.bot;
         this.mcData = mineBot.mcData;

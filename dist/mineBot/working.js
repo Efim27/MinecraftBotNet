@@ -28,7 +28,9 @@ class BotWork {
                     console.log();
                     console.log(`Номер круга: ${this.loopNum}`);
                     this.botDoings.checkMoney();
-                    console.log(this.mineBot.getSalaryPerHour(this.loopTimeMs));
+                    console.log(`Зарплата: ${this.mineBot.getSalaryPerHour(this.loopTimeMs)}`);
+                    console.log(`Инвентарь: `);
+                    console.log(this.mineBot.inventory.getInventoryItemsCount());
                     console.log();
                 }
                 this.loopNum++;

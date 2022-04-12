@@ -42,17 +42,29 @@ const config_json_1 = __importDefault(require("../config/config.json"));
 class BotDoings {
     constructor(mineBot) {
         this.checkStats = () => __awaiter(this, void 0, void 0, function* () {
-            yield this.checkFood();
+            this.checkFoodCount();
+            yield this.checkSatiety();
             yield this.checkThirst();
             yield this.checkHealth();
         });
-        this.checkFood = () => {
+        this.checkSatiety = () => {
             if (this.mineBot.stats.food > config_json_1.default.bot.eatAfterMinFood) {
                 return;
             }
             console.log(`Кушаю`);
             console.log(`Сытость: ${this.mineBot.stats.food}\n`);
             return this.eat();
+        };
+        this.checkFoodCount = () => {
+            const botInventory = this.botInventory.getInventoryItemsCount();
+            if (botInventory['potion'] < 3) {
+                console.log('Мало воды');
+                return this.mineBot.destroy();
+            }
+            if (botInventory['baked_potato'] < 8) {
+                console.log('Мало еды');
+                return this.mineBot.destroy();
+            }
         };
         this.checkThirst = () => {
             if (this.mineBot.stats.thirst > config_json_1.default.bot.drinkAfterMinThirst) {
