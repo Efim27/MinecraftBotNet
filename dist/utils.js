@@ -13,7 +13,7 @@ const randomIntFromInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
 exports.randomIntFromInterval = randomIntFromInterval;
-const delay = (ms, timemiss = 50) => {
+const delay = (ms, timemiss = 20) => {
     return new Promise(resolve => {
         setTimeout(() => {
             return resolve();

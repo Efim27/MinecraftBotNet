@@ -9,7 +9,13 @@
         "block": [209.5, 64, 175.5],
         "putingBlock": [205, 64, 164],
         "sign": [204, 65.5, 162],
-        "trashDrop": [197.5, 64, 164]
+        "trashDrop": [197.5, 64, 164],
+        "eatingPlace": [198.5, 64, 169],
+        "halfPathCoords": [
+            [205, 64, 170],
+            [206.5, 64, 168],
+            [208.5, 64, 168]
+        ]
     },
     "bot": {
         "printStatsEveryLoopNum": 5,

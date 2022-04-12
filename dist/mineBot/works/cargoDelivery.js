@@ -39,9 +39,16 @@ const utils = __importStar(require("../../utils"));
 const config_json_1 = __importDefault(require("../../config/config.json"));
 class CargoDelivery {
     constructor(botDoings) {
+        this.gotoHalfPath = () => {
+            const pathVariantNumber = utils.randomIntFromInterval(0, 2);
+            const pathCoord = config_json_1.default.coords.halfPathCoords[pathVariantNumber];
+            return this.botDoings.gotoCoords(pathCoord);
+        };
         this.work = () => {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 const startTimeMs = performance.now();
+                //Идти к промежуточной координате
+                yield this.gotoHalfPath();
                 //Идти к месту сбора материалов
                 yield this.botDoings.gotoCoords(config_json_1.default.coords.takingBlock);
                 yield utils.delay(50);
@@ -50,6 +57,8 @@ class CargoDelivery {
                 // @ts-ignore
                 yield this.botDoings.blockClick(...num);
                 yield utils.delay(50);
+                //Идти к промежуточной координате
+                yield this.gotoHalfPath();
                 //Идти к месту сдачи материалов
                 yield this.botDoings.gotoCoords(config_json_1.default.coords.putingBlock);
                 yield utils.delay(50);

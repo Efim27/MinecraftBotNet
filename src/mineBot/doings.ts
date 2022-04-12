@@ -31,7 +31,7 @@ export default class BotDoings {
         await this.checkHealth();
     }
 
-    public checkFood = () => {ц
+    public checkFood = () => {
         if (this.mineBot.stats.food > config.bot.eatAfterMinFood) {
             return;
         }
@@ -54,12 +54,14 @@ export default class BotDoings {
     }
 
     public checkHealth = () => {
-        if (this.mineBot.stats.health > 7) {
+        const health: number = this.mineBot.stats.health;
+
+        if (!health || health > 7) {
             return;
         }
 
         console.log(`Мало здоровья`);
-        console.log(`Здоровье: ${this.mineBot.stats.health}\n`);
+        console.log(`Здоровье: ${health}\n`);
 
         return this.mineBot.destroy();
 
@@ -69,7 +71,7 @@ export default class BotDoings {
         return new Promise(async (resolve) => {
             const foodItem = this.botInventory.itemByName('baked_potato');
     
-            await this.gotoCoords(config.coords.trashDrop);
+            await this.gotoCoords(config.coords.eatingPlace);
             await this.bot.equip(foodItem, 'hand').catch(() => {});
             await this.bot.consume().catch(() => {});
             await this.bot.unequip('hand').catch(() => {});
@@ -93,9 +95,7 @@ export default class BotDoings {
 
     public gotoCoords = (coords): Promise<void> => {
         return new Promise(async (resolve) => {
-            //bot.setControlState('jump', true);
             await this.bot.pathfinder.goto(new GoalNear(coords[0], coords[1], coords[2], 1));
-            //bot.setControlState('jump', false);
     
             return resolve();
         });
@@ -105,7 +105,7 @@ export default class BotDoings {
         return new Promise(async (resolve) => {
             const coordVec3 = vec3(x, y, z);
             const targetBlock = this.bot.blockAt(coordVec3);
-            const clickCount = utils.randomIntFromInterval(1, 2);
+            const clickCount = utils.randomIntFromInterval(2, 3);
             
             for (const iter in [...Array(clickCount).keys()]) {
                 await this.bot.activateBlock(targetBlock);

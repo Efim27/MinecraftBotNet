@@ -47,7 +47,6 @@ class BotDoings {
             yield this.checkHealth();
         });
         this.checkFood = () => {
-            ц;
             if (this.mineBot.stats.food > config_json_1.default.bot.eatAfterMinFood) {
                 return;
             }
@@ -64,17 +63,18 @@ class BotDoings {
             return this.drink();
         };
         this.checkHealth = () => {
-            if (this.mineBot.stats.health > 7) {
+            const health = this.mineBot.stats.health;
+            if (!health || health > 7) {
                 return;
             }
             console.log(`Мало здоровья`);
-            console.log(`Здоровье: ${this.mineBot.stats.health}\n`);
+            console.log(`Здоровье: ${health}\n`);
             return this.mineBot.destroy();
         };
         this.eat = () => {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 const foodItem = this.botInventory.itemByName('baked_potato');
-                yield this.gotoCoords(config_json_1.default.coords.trashDrop);
+                yield this.gotoCoords(config_json_1.default.coords.eatingPlace);
                 yield this.bot.equip(foodItem, 'hand').catch(() => { });
                 yield this.bot.consume().catch(() => { });
                 yield this.bot.unequip('hand').catch(() => { });
@@ -93,9 +93,7 @@ class BotDoings {
         };
         this.gotoCoords = (coords) => {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-                //bot.setControlState('jump', true);
                 yield this.bot.pathfinder.goto(new GoalNear(coords[0], coords[1], coords[2], 1));
-                //bot.setControlState('jump', false);
                 return resolve();
             }));
         };
@@ -103,7 +101,7 @@ class BotDoings {
             return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
                 const coordVec3 = vec3(x, y, z);
                 const targetBlock = this.bot.blockAt(coordVec3);
-                const clickCount = utils.randomIntFromInterval(1, 2);
+                const clickCount = utils.randomIntFromInterval(2, 3);
                 for (const iter in [...Array(clickCount).keys()]) {
                     yield this.bot.activateBlock(targetBlock);
                 }

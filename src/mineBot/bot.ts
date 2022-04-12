@@ -76,7 +76,6 @@ export default class MineBot {
         //pathfinder
         const workingMove = new Movements(this.bot, this.mcData);
         workingMove.allow1by1towers = false;
-        workingMove.allowParkour = false;
         workingMove.allowSprinting = true;
         this.bot.pathfinder.setMovements(workingMove);
         this.bot.pathfinder.thinkTimeout = 500;
