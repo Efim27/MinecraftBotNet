@@ -153,7 +153,7 @@ class MineBot {
                 }
                 const msgText = jsonMsg.extra[1].text.trim();
                 const balanceNum = Number.parseInt(msgText.replace('$', '').replace(',', ''));
-                console.log(`Баланс: ${balanceNum} $`);
+                console.log(`(${this.username}) Баланс: ${balanceNum} $`);
                 if (this.payMoneyOwner) {
                     const payDelay = utils.randomIntFromInterval(30000, 120000);
                     this.payMoneyOwner = false;

@@ -85,7 +85,7 @@ export default class BotDoings {
         return new Promise(async (resolve) => {
             const coordVec3 = vec3(x, y, z);
             const targetBlock = this.bot.blockAt(coordVec3);
-            const clickCount = utils.randomIntFromInterval(2, 4);
+            const clickCount = utils.randomIntFromInterval(1, 2);
             
             for (const iter in [...Array(clickCount).keys()]) {
                 await this.bot.activateBlock(targetBlock);

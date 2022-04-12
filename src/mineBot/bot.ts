@@ -166,7 +166,7 @@ export default class MineBot {
 
             const msgText = jsonMsg.extra[1].text.trim();
             const balanceNum: number = Number.parseInt(msgText.replace('$', '').replace(',', ''));
-            console.log(`Баланс: ${balanceNum} $`);
+            console.log(`(${this.username}) Баланс: ${balanceNum} $`);
 
             if (this.payMoneyOwner) {
                 const payDelay: number = utils.randomIntFromInterval(30000, 120000);
